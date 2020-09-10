@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using LibraryApi.Services;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,13 @@ namespace LibraryApi.Controllers
 {
     public class StatusController : ControllerBase
     {
+        ISystemTime Clock;
+
+        public StatusController(ISystemTime clock)
+        {
+            Clock = clock;
+        }
+
         [HttpPost("employees")]
         public ActionResult Hire([FromBody]EmployeeCreateRequest employeeToHire)
         {
@@ -19,8 +27,8 @@ namespace LibraryApi.Controllers
                 Id = new Random().Next(10, 15000),
                 Name = employeeToHire.Name,
                 Department = employeeToHire.Department,
-                HireDate = DateTime.Now,
-                StartingSalary = employeeToHire.StartingSalary
+                HireDate = Clock.GetCurrent(),
+                StartingSalary = employeeToHire.StartingSalary + 50000
             };
             // 3. Return a 201 Created status code.
             // 4. Include in the response a link to the brand new baby resource (location: http://localhost:1337
@@ -53,8 +61,8 @@ namespace LibraryApi.Controllers
                 Id = employeeId,
                 Name = "Bob Smith",
                 Department = "DEV",
-                HireDate = DateTime.Now.AddDays(-100)
-
+                HireDate = DateTime.Now.AddDays(-399),
+                StartingSalary = 250000
             };
             return Ok(response);
         }
@@ -66,7 +74,7 @@ namespace LibraryApi.Controllers
             {
                 Message = "Looks Good on my end. Party On.",
                 CheckedBy = "Joe Schmidt",
-                WhenChecked = DateTime.Now
+                WhenChecked = Clock.GetCurrent()
             };
     
             return Ok(status);
