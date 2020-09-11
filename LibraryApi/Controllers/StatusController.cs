@@ -16,6 +16,8 @@ namespace LibraryApi.Controllers
             Clock = clock;
         }
 
+        // this will hide this in swagger
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpPost("employees")]
         public ActionResult Hire([FromBody]EmployeeCreateRequest employeeToHire)
         {

@@ -1,0 +1,21 @@
+version: "3.7"
+services:
+    api:
+        image: sonyawilde/libraryapi
+        depends_on: 
+            - sql
+        ports:
+            - 80:80
+        environment: 
+            - ConnectionStrings__LibraryDatabase=server=sql;database=library;user=sa;password=TokyoJoe138!
+        networks:
+            - my-network
+    sql:
+        image: sonyawilde
+        ports:
+            - 1433:1433
+        networks:
+            - my-network
+networks:
+    my-network:
+        driver: bridge
